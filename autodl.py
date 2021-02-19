@@ -17,7 +17,7 @@ import time
 config = {
 	"outputDir": Path("source_dl"),
 	# could use generated fake UA
-	"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:77.0) Gecko/20100101 Firefox/77.0",
+	"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0",
 	"proxy": {
 		# for use with eg. tor, domain.hu still uses http (can't afford LE certs :'( )
 		#'http': 'socks5://127.0.0.1:9050',
@@ -29,10 +29,10 @@ class AutoDL:
 	_logFile = "autodl.log"
 	_logWriter = None
 	_urls = {
-		"d_abc": "http://www.domain.hu/domain/varolista/abc.html",
-		"d_ido": "http://www.domain.hu/domain/varolista/ido.html",
-		"p_abc": "http://www.domain.hu/domain/parkolas/abc.html",
-		"p_ido": "http://www.domain.hu/domain/parkolas/ido.html"
+		"d_abc": "https://info.domain.hu/varolista/hu/abc.html",
+		"d_ido": "https://info.domain.hu/varolista/hu/ido.html",
+		"p_abc": "https://info.domain.hu/parkolas/hu/abc.html",
+		"p_ido": "https://info.domain.hu/parkolas/hu/ido.html"
 	}
 
 	def download(self):
@@ -54,10 +54,7 @@ class AutoDL:
 						raise Exception
 
 					# save original response in case encoding gets changed without noticing
-					open(self._downloadPath / f"{key}/{currdate}.txt_orig", "wb").write(r.content)
-
-					# convert this ancient garbage encoding to utf-8 and write to output dir
-					open(self._downloadPath / f"{key}/{currdate}.txt", "w", encoding="utf_8").write(r.content.decode("iso8859_2"))
+					open(self._downloadPath / f"{key}/{currdate}.txt", "wb").write(r.content)
 					
 					self.log("Done")
 					break
